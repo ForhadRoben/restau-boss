@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from "../../providers/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
     // const captchaRef = useRef(null);
     const [disable, setDisable] = useState(true)
+    const { signIn } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     useEffect(() => {
         loadCaptchaEnginge(6)
@@ -12,13 +19,30 @@ const Login = () => {
 
 
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        const form = e.target;
+    const handleLogin = event => {
+        event.preventDefault();
+        const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
         console.log(email, password);
+        signIn(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                Swal.fire({
+                    title: 'User Login Successful.',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                });
+                navigate(from, { replace: true });
+            })
     }
+
+
     const handleValidateCaptcha = (e) => {
         const user_captcha_value = e.target.value;
         console.log(user_captcha_value);
@@ -84,6 +108,7 @@ const Login = () => {
                                 <input disabled={disable} className="btn btn-primary" type="submit" value="Login" />
                             </div>
                         </form>
+                        <p className="text-center py-4 "><small>New Here? <Link to="/signup" className="text-red-500 font-semibold">Create an account</Link> </small></p>
                     </div>
                 </div>
             </div>
