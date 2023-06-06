@@ -2,8 +2,13 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 
+import { FaShoppingCart } from 'react-icons/fa';
+import useCart from "../../../hooks/useCart";
+
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [cart] = useCart();
+    console.log(cart);
 
     const handleLogOut = () => {
         logOut()
@@ -17,11 +22,21 @@ const Navbar = () => {
             <li><Link to='/menu'>Our Menu</Link></li>
             <li><Link to='/order/salad'>Order Food</Link></li>
             <li><Link to="/secret">Secret</Link></li>
+            <li>
+                <Link to="/dashboard/mycart">
+                    {/* <Link to="/"> */}
+                    <button className="btn btn-sm gap-2">
+                        <FaShoppingCart></FaShoppingCart>
+                        {/* <div className="badge badge-secondary">+0</div> */}
+                        <div className="badge badge-secondary">+{cart?.length || 0}</div>
+                    </button>
+                </Link>
+            </li>
             {
                 user ? <>
-                    <span>{user?.displayName}</span>
-                    <span><img className='rounded-full' style={{ height: "40px", width: "40px" }} src={user?.photoURL} alt="" /></span>
-                    <button onClick={handleLogOut} className="btn btn-ghost">LogOut</button>
+                    {/* <li><span >{user?.displayName}</span></li>
+                    <li><span><img className='rounded-full' style={{ height: "40px", width: "40px" }} src={user?.photoURL} alt="" /></span></li> */}
+                    <button onClick={handleLogOut} className="btn btn-ghost btn-sm">LogOut</button>
                 </> : <>
                     <li><Link to="/login">Login</Link></li>
                 </>
@@ -39,7 +54,7 @@ const Navbar = () => {
                             {navOptions}
                         </ul>
                     </div>
-                    <a className="btn btn-ghost normal-case text-xl">RestauBoSS</a>
+                    <Link to='/' className="btn btn-ghost normal-case text-xl">RestauBoSS</Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">

@@ -96,16 +96,15 @@ const Login = () => {
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
-                                <input onBlur={handleValidateCaptcha} type="text" name="captcha" placeholder="type captcha above" className="input input-bordered" />
-
-
+                                <input type="text" name="captcha" onBlur={handleValidateCaptcha} placeholder="type captcha above" className="input input-bordered" />
 
                                 {/* <input ref={captchaRef}  type="text" name="captcha" placeholder="type captcha above" className="input input-bordered" /> */}
                                 {/* <button onClick={handleValidateCaptcha} className="btn btn-ghost btn-xs" >Validate</button> */}
 
                             </div>
+                            {/* TODO: make button disabled for captcha */}
                             <div className="form-control mt-6">
-                                <input disabled={disable} className="btn btn-primary" type="submit" value="Login" />
+                                <input disabled={false} className="btn btn-primary" type="submit" value="Login" />
                             </div>
                         </form>
                         <p className="text-center py-4 "><small>New Here? <Link to="/signup" className="text-red-500 font-semibold">Create an account</Link> </small></p>
